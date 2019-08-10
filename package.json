@@ -1,35 +1,28 @@
 {
-  "name": "webpack-starter",
+  "name": "strava-graphs",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "scripts": {
+    "dev-client": "gatsby develop",
+    "dev-server": "nodemon --watch server.js -x node -r dotenv/config -r esm server.js",
     "dev": "concurrently \"yarn dev-client\" \"yarn dev-server\"",
-    "dev-client": "ENV_FILE=true webpack-dev-server --config webpack.dev.js",
-    "dev-server": "nodemon --ignore client/ -x node -r dotenv/config -r esm server.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "gatsby build",
     "start": "NODE_ENV=production node -r esm server.js",
     "stage": "ENV_FILE=true yarn build && NODE_ENV=production node -r dotenv/config -r esm server.js"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "concurrently": "^4.1.1",
-    "nodemon": "^1.19.1",
-    "uglifyjs-webpack-plugin": "^1.2.4",
-    "webpack": "^4.1.1",
-    "webpack-bundle-size-analyzer": "^2.7.0",
-    "webpack-cli": "^2.0.12",
-    "webpack-dev-server": "^3.1.0",
-    "webpack-merge": "^4.1.2"
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "gatsby": "^2.13.57",
+    "gatsby-plugin-env-variables": "^1.0.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   }
 }
