@@ -4,26 +4,40 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev-client": "ENV_FILE=true gatsby develop",
+    "dev-client": "PORT=3000 react-scripts start",
     "dev-server": "nodemon --watch server.js -x node -r dotenv/config -r esm server.js",
     "dev": "concurrently \"yarn dev-client\" \"yarn dev-server\"",
-    "build": "gatsby build",
+    "build": "react-scripts build",
     "start": "NODE_ENV=production node -r esm server.js",
-    "stage": "ENV_FILE=true yarn build && NODE_ENV=production node -r dotenv/config -r esm server.js"
-  },
-  "devDependencies": {
-    "concurrently": "^4.1.1",
-    "nodemon": "^1.19.1"
+    "stage": "yarn build && NODE_ENV=production node -r dotenv/config -r esm server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "gatsby": "^2.13.57",
-    "gatsby-plugin-env-variables": "^1.0.1",
-    "isomorphic-fetch": "^2.2.1",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.0",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

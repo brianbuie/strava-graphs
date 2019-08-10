@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 
@@ -31,7 +32,11 @@ app.use('/api', (req, res, next) => {
   res.json({ message: 'hello from api' });
 });
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get((req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const port = process.env.PORT;
 app.listen(port, () => console.log(`Ready on port ${port}`));
