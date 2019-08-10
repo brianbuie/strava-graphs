@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from 'isomorphic-fetch';
 
 export default () => {
   const host = process.env.API_ENDPOINT;

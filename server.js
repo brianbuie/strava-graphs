@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const app = express();
 
-// Only allow requests from our client
+// Allow requests from our client
 app.use(
   cors({
     origin: process.env.CLIENT_HOST
@@ -30,6 +30,8 @@ app.use((req, res, next) => {
 app.use('/api', (req, res, next) => {
   res.json({ message: 'hello from api' });
 });
+
+app.use(express.static('public'));
 
 const port = process.env.PORT;
 app.listen(port, () => console.log(`Ready on port ${port}`));
