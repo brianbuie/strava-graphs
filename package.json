@@ -8,7 +8,9 @@
     "dev": "concurrently \"yarn dev-client\" \"yarn dev-server\"",
     "dev-client": "webpack-dev-server --config webpack.dev.js",
     "dev-server": "nodemon --ignore client/ -x node -r dotenv/config -r esm server.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "start": "NODE_ENV=production node -r esm server.js",
+    "stage": "ENV_FILE=true yarn build && NODE_ENV=production node -r dotenv/config -r esm server.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

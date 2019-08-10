@@ -1,4 +1,4 @@
 node_modules/*
-client/dist/*
+client/public/dist/*
 yarn-error.log
 .env

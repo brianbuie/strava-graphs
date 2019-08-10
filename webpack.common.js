@@ -1,10 +1,13 @@
 const path = require('path');
-const BundleSize = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin;
+const BundleSizePlugin = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin;
+const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
+
+if (process.env.ENV_FILE) require('dotenv').config();
 
 module.exports = {
   entry: './client/src/index',
   output: {
-    path: path.resolve(__dirname, 'client/dist'),
+    path: path.resolve(__dirname, 'client/public/dist'),
     filename: 'bundle.js'
   },
   resolve: {
@@ -20,5 +23,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [new BundleSize('./size-report.txt')]
+  plugins: [new BundleSizePlugin('./size-report.txt'), new EnvironmentPlugin(process.env)]
 };
