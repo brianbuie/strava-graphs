@@ -32,6 +32,10 @@ const GlobalStyle = createGlobalStyle`
 		justify-content: center;
 		text-align: center;
   }
+  a {
+    text-decoration: none;
+    color: ${theme.link};
+  }
 `;
 
 const CustomTheme = ({ children }) => (
