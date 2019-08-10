@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"yarn dev-client\" \"yarn dev-server\"",
-    "dev-client": "webpack-dev-server --config webpack.dev.js",
+    "dev-client": "ENV_FILE=true webpack-dev-server --config webpack.dev.js",
     "dev-server": "nodemon --ignore client/ -x node -r dotenv/config -r esm server.js",
     "build": "webpack --config webpack.prod.js",
     "start": "NODE_ENV=production node -r esm server.js",
