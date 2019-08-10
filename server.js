@@ -12,7 +12,7 @@ const app = express();
 // Allow requests from our client
 app.use(
   cors({
-    origin: process.env.REACT_APP_CLIENT_HOST
+    origin: process.env.CLIENT_HOST
   })
 );
 
@@ -63,7 +63,7 @@ app.use('/api/strava/callback', async (req, res, next) => {
     code: req.query.code,
     grant_type: 'authorization_code'
   });
-  res.redirect(`${process.env.REACT_APP_CLIENT_HOST}/auth?${stringify(query)}`);
+  res.redirect(`${process.env.CLIENT_HOST}/auth?${stringify(query)}`);
 });
 
 app.use('/api/strava/*', async (req, res, next) => {
@@ -95,7 +95,7 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get((req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
