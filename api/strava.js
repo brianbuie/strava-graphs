@@ -1,7 +1,7 @@
 import express from 'express';
+import cache from 'memory-cache';
 import fetch from 'node-fetch';
 import { stringify } from 'query-string';
-import proxy from 'express-request-proxy';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 
@@ -65,17 +65,26 @@ api.get('/callback', async (req, res, next) => {
   res.redirect(`${process.env.CLIENT_HOST}`);
 });
 
-api.use(
-  '/*',
-  async (req, res, next) => {
-    const { access_token } = req.user;
-    if (!access_token) return res.status(401).send({});
-    req.headers['Authorization'] = `Bearer ${access_token}`;
-    return next();
-  },
-  proxy({
-    url: 'https://www.strava.com/api/*'
-  })
-);
+api.use(async (req, res, next) => {
+  const { access_token } = req.user;
+  if (!access_token) return res.status(401).send({});
+  const cacheLocation = `${access_token} ${req.path}`;
+  const cachedResponse = cache.get(cacheLocation);
+  if (cachedResponse) {
+    return res.json(cachedResponse);
+  }
+  try {
+    console.log('fetching fresh response');
+    const freshResponse = await fetch(`https://www.strava.com/api${req.path}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    }).then(_res => _res.json());
+    cache.put(cacheLocation, freshResponse, 1000 * 60 * 5);
+    res.json(freshResponse);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 export default api;
