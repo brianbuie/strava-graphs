@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import fetch from './utils/fetch';
 
 export const StravaContext = React.createContext({});
 
@@ -7,29 +8,27 @@ export const StravaProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
   function fetchStrava(endpoint = '') {
-    return fetch(`${process.env.REACT_APP_API_ENDPOINT}/strava${endpoint}`, {
-      credentials: 'include'
+    return fetch(`${process.env.REACT_APP_API_ENDPOINT}/strava${endpoint}`);
+  }
+
+  function disconnect() {
+    return fetchStrava('/disconnect').then(() => {
+      setStatus('UNAUTHENTICATED');
+      setUser({});
     });
   }
 
   useEffect(() => {
-    fetchStrava('/v3/athlete')
-      .then(res => {
-        if (res.status === 401) {
-          return setStatus('UNAUTHENTICATED');
-        }
-        res.json().then(res => {
-          setStatus('AUTHENTICATED');
-          setUser(res);
-        });
-      })
-      .catch(err => {
-        setStatus('ERROR');
-      });
+    fetchStrava('/v3/athlete').then(({ ok, status, data }) => {
+      if (status === 401) return setStatus('UNAUTHENTICATED');
+      if (!ok) return setStatus('ERROR');
+      setUser(data);
+      setStatus('AUTHENTICATED');
+    });
   }, []);
 
   return (
-    <StravaContext.Provider value={{ user, status, fetchStrava }}>
+    <StravaContext.Provider value={{ user, status, disconnect, fetchStrava }}>
       {children}
     </StravaContext.Provider>
   );

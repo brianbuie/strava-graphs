@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import stravaRoutes from './api/strava';
 
@@ -36,6 +37,15 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.use((err, req, res, next) => {
+  const error = {
+    status: err.status || 500,
+    message: err.message || 'Something went wrong',
+    stack: !isProd ? err.stack : ''
+  };
+  return res.status(error.status).json(error);
 });
 
 const port = process.env.PORT;

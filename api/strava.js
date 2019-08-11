@@ -56,6 +56,11 @@ api.get('/connect', (req, res, next) => {
   );
 });
 
+api.get('/disconnect', (req, res, next) => {
+  res.clearCookie('token');
+  res.send({});
+});
+
 api.get('/callback', async (req, res, next) => {
   const auth = await getStravaOAuthToken({
     code: req.query.code,
@@ -67,7 +72,7 @@ api.get('/callback', async (req, res, next) => {
 
 api.use(async (req, res, next) => {
   const { access_token } = req.user;
-  if (!access_token) return res.status(401).send({});
+  if (!access_token) return next({ status: 401, message: 'UNAUTHORIZED' });
   const cacheLocation = `${access_token} ${req.path}`;
   const cachedResponse = cache.get(cacheLocation);
   if (cachedResponse) {
@@ -80,7 +85,7 @@ api.use(async (req, res, next) => {
         Authorization: `Bearer ${access_token}`
       }
     }).then(_res => _res.json());
-    cache.put(cacheLocation, freshResponse, 1000 * 60 * 5);
+    cache.put(cacheLocation, freshResponse, 1000 * 60 * 60);
     res.json(freshResponse);
   } catch (err) {
     res.status(500).send(err);

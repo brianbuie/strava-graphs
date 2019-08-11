@@ -28,6 +28,13 @@ function themeMap(theme) {
   }
 }
 
+const LinkStyles = styled.span`
+  display: inline-block;
+  a {
+    display: inline-block;
+  }
+`;
+
 const StyledButton = styled.button`
   border: ${({ border, color, theme }) => (border ? `1px solid ${theme[color || 'text']}` : 0)};
   border-radius: 0.25em;
@@ -36,7 +43,7 @@ const StyledButton = styled.button`
   white-space: nowrap;
   text-decoration: none;
   padding: ${({ pad }) => (pad === 'none' ? 0 : '0.55em 1.1em')};
-  margin: 0.25em;
+  margin: 0;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   display: inline-flex;
   justify-content: center;
@@ -57,10 +64,10 @@ const StyledButton = styled.button`
     fill: ${({ color, theme }) => theme[color || 'text']};
   }
   .icon {
-    height: 1em;
+    height: 1.25em;
     svg {
-      width: 1em;
-      height: 1em;
+      width: 1.25em;
+      height: 1.25em;
     }
   }
   .text {
@@ -72,7 +79,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ label, Icon, theme, ...props }) => {
+const Button = ({ label, children, Icon, theme, ...props }) => {
   const { DefaultIcon, ...themeProps } = themeMap(theme);
   const RenderIcon = Icon || DefaultIcon;
   const mergedProps = { ...themeProps, ...props };
@@ -84,17 +91,26 @@ const Button = ({ label, Icon, theme, ...props }) => {
         </span>
       )}
       {label && <span className="text">{label}</span>}
+      {children && <span className="text">{children}</span>}
     </StyledButton>
   );
 };
 
-const withLink = Button => ({ withLink, ...props }) =>
-  withLink ? (
-    <Link {...withLink}>
-      <Button {...props} />
-    </Link>
-  ) : (
-    <Button {...props} />
+const withLink = Button => ({ withLink, ...props }) => {
+  if (!withLink) return <Button {...props} />;
+  return (
+    <LinkStyles>
+      {withLink.href ? (
+        <a {...withLink}>
+          <Button {...props} />
+        </a>
+      ) : (
+        <Link {...withLink}>
+          <Button {...props} />
+        </Link>
+      )}
+    </LinkStyles>
   );
+};
 
 export default withLink(Button);

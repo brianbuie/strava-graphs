@@ -3,6 +3,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 const theme = {
   bkg: '#282c34',
+  foreground: 'white',
   text: '#a6a6a6',
   link: '#60dafb',
   white: 'white',
@@ -20,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   }
   *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: border-box;
   }
   body {
     margin: 0;
