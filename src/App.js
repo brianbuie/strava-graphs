@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { Header, Theme } from './ui';
-import Home from './Home';
+import { Menu, Theme } from './ui';
+import { StravaProvider } from './StravaContext';
 
 function App() {
   return (
     <Theme>
       <BrowserRouter>
-        <Header />
-        <Home />
+        <StravaProvider>
+          <Menu />
+        </StravaProvider>
       </BrowserRouter>
     </Theme>
   );

@@ -1,5 +1,5 @@
 import Button from './Button';
-import Header from './Header';
+import Menu from './Menu';
 import Theme from './Theme';
 
-export { Button, Header, Theme };
+export { Button, Menu, Theme };
